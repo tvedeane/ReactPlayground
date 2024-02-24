@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 
 import ReactLogo from './assets/react.svg'
@@ -7,7 +7,7 @@ import ViteLogo from '/vite.svg'
 /**
  * @param {'react'|'vite'} props.displayedImage
  */
-const Tile = ({ imageState, onClick, displayedImage }) => {
+const Tile = forwardRef(({ onClick, displayedImage }, ref) => {
   const [image, setImage] = useState(null);
   useEffect(() => {
     switch (displayedImage) {
@@ -23,6 +23,7 @@ const Tile = ({ imageState, onClick, displayedImage }) => {
   }, [displayedImage]);
 
   const swapLogo = () => {
+    console.log('hey im in the child and swapping the logo!')
     if (image === ReactLogo) {
       setImage(ViteLogo);
     } else if (image === ViteLogo) {
@@ -30,10 +31,14 @@ const Tile = ({ imageState, onClick, displayedImage }) => {
     }
   };
 
+  useImperativeHandle(ref, () => ({
+    swapLogo
+  }));
+
   return (
     <img onClick={()=>{onClick();swapLogo();}} src={image} alt="Displayed" />
   );
-};
+});
 
 Tile.propTypes = {
   displayedImage: PropTypes.oneOf(['react', 'vite']),
