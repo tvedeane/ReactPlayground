@@ -28,7 +28,7 @@ function App() {
           ref={el => tileRefs.current[index] = el}
           imageState={tile.imageState}
           onClick={() => handleTileClick(index)}
-          displayedImage='react'
+          displayedImage={tile}
         />
       ))}
     </div>

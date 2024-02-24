@@ -36,7 +36,7 @@ const Tile = forwardRef(({ onClick, displayedImage }, ref) => {
   }));
 
   return (
-    <img onClick={()=>{onClick();swapLogo();}} src={image} alt="Displayed" />
+    <img onClick={()=>{onClick();}} src={image} alt="Displayed" />
   );
 });
 
