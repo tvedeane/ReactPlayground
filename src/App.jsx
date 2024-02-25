@@ -6,37 +6,41 @@ import Tile from './Tile'
 
 function App() {
   const initialTileData = [
-    { imageState: viteLogo },
-    { imageState: viteLogo },
-    { imageState: viteLogo },
-    { imageState: viteLogo },
-    { imageState: viteLogo },
+    [{ imageState: viteLogo },{ imageState: viteLogo },{ imageState: viteLogo }],
+    [{ imageState: viteLogo },{ imageState: viteLogo },{ imageState: viteLogo }],
+    [{ imageState: viteLogo },{ imageState: viteLogo },{ imageState: viteLogo }],
   ]
   const [tileData, setTileData] = useState(initialTileData);
 
-  const handleTileClick = (clickedIndex) => {
+  const handleTileClick = (clickedRowIndex, clickedColumnIndex) => {
+    console.log(clickedRowIndex, clickedColumnIndex)
     setTileData((prevTileData) => {
-      return prevTileData.map((tile, index) => {
-        if (index == clickedIndex) {
-          return { ...tile, imageState: tile.imageState === viteLogo ? reactLogo : viteLogo}
-        } else if (isAdjacent(index, clickedIndex)) {
-          return { ...tile, imageState: tile.imageState === viteLogo ? reactLogo : viteLogo}
-        }
-        return tile;
-      })
+      return prevTileData.map((row, rowIndex) => {
+        return row.map((tile, columnIndex) => {
+          console.log(clickedRowIndex, clickedColumnIndex)
+          if ((rowIndex == clickedRowIndex && columnIndex == clickedColumnIndex) || isAdjacent(clickedRowIndex, clickedColumnIndex, rowIndex, columnIndex)) {
+            return { ...tile, imageState: tile.imageState === viteLogo ? reactLogo : viteLogo}
+          }
+          return tile;
+        });
+      });
     });
   }
 
-  const isAdjacent = (i1, i2) => Math.abs((i1 - i2)) == 1
+  const isAdjacent = (r1, c1, r2, c2) => (Math.abs(r1 - r2) == 1 && c1 == c2) || (Math.abs(c1 - c2) == 1 && r1 == r2)
 
   return (
     <div>
-      {tileData.map((tile, index) => (
-        <Tile
-          key={index}
-          imageState={tile.imageState}
-          onClick={() => handleTileClick(index)}
-        />
+      {tileData.map((row, rowIndex) => (
+        <div key={rowIndex} style={{ display: 'flex' }}>
+        {row.map((tile, columnIndex) => (
+          <Tile
+            key={columnIndex}
+            imageState={tile.imageState}
+            onClick={() => handleTileClick(rowIndex, columnIndex)}
+          />
+        ))}
+        </div>
       ))}
     </div>
   )
