@@ -1,25 +1,21 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Tile from './Tile'
 
 function App() {
   const initialTileData = [
-    [{ imageState: viteLogo },{ imageState: viteLogo },{ imageState: viteLogo }],
-    [{ imageState: viteLogo },{ imageState: viteLogo },{ imageState: viteLogo }],
-    [{ imageState: viteLogo },{ imageState: viteLogo },{ imageState: viteLogo }],
+    [{ imageString: 'vite' },{ imageString: 'vite' },{ imageString: 'vite' }],
+    [{ imageString: 'vite' },{ imageString: 'vite' },{ imageString: 'vite' }],
+    [{ imageString: 'vite' },{ imageString: 'vite' },{ imageString: 'vite' }],
   ]
   const [tileData, setTileData] = useState(initialTileData);
 
   const handleTileClick = (clickedRowIndex, clickedColumnIndex) => {
-    console.log(clickedRowIndex, clickedColumnIndex)
     setTileData((prevTileData) => {
       return prevTileData.map((row, rowIndex) => {
         return row.map((tile, columnIndex) => {
-          console.log(clickedRowIndex, clickedColumnIndex)
           if ((rowIndex == clickedRowIndex && columnIndex == clickedColumnIndex) || isAdjacent(clickedRowIndex, clickedColumnIndex, rowIndex, columnIndex)) {
-            return { ...tile, imageState: tile.imageState === viteLogo ? reactLogo : viteLogo}
+            return { ...tile, imageString: tile.imageString === 'vite' ? 'react' : 'vite'}
           }
           return tile;
         });
@@ -36,7 +32,7 @@ function App() {
         {row.map((tile, columnIndex) => (
           <Tile
             key={columnIndex}
-            imageState={tile.imageState}
+            imageString={tile.imageString}
             onClick={() => handleTileClick(rowIndex, columnIndex)}
           />
         ))}
